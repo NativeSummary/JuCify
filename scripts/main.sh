@@ -48,7 +48,7 @@ if [ "$RAW" = false ]
 then
     print_info "Extracting Java-to-Binary and Binary-to-Java function calls..."
 fi
-./execute_with_limit_time.sh ./launch_native_disclosurer.sh -f $APK_PATH >/dev/null 2>/dev/null
+./execute_with_limit_time.sh ./launch_native_disclosurer.sh -f $APK_PATH 2>&1 | tee $APK_PATH.native.log
 wait
 
 DST=$APK_DIRNAME"/"$APK_BASENAME
@@ -94,9 +94,9 @@ then
     OPTS+="-f $CALLGRAPHS_PATHS"
 fi
 
-java -jar ../target/JuCify-0.1-jar-with-dependencies.jar -a $APK_PATH -p $PLATFORMS_PATH $OPTS
+/usr/bin/time -v java -jar ../target/JuCify-0.1-jar-with-dependencies.jar -a $APK_PATH -p $PLATFORMS_PATH $OPTS 2>&1 | tee $APK_PATH.flow.log
 
 if [ "$CLEAN" = true ]
 then
-    rm -rf $APK_DIRNAME/$APK_BASENAME $ENTRYPOINTS_DIR
+    rm -rf $APK_DIRNAME/$APK_BASENAME # $ENTRYPOINTS_DIR
 fi

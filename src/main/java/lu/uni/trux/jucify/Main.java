@@ -2,6 +2,7 @@ package lu.uni.trux.jucify;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Arrays;
 
 import org.apache.commons.io.FilenameUtils;
 import org.javatuples.Pair;
@@ -49,6 +50,7 @@ import soot.jimple.toolkits.callgraph.CallGraph;
 
 public class Main {
 	public static void main(String[] args) throws Throwable {
+		System.out.println(Arrays.toString(args));
 		StopWatch analysisTime = new StopWatch("Analysis");
 		analysisTime.start("Analysis");
 		CommandLineOptions options = new CommandLineOptions(args);
@@ -102,6 +104,7 @@ public class Main {
 		sa.getConfig().setSootIntegrationMode(SootIntegrationMode.UseExistingInstance);
 		sa.getConfig().getPathConfiguration().setPathReconstructionMode(PathReconstructionMode.Precise);
 		sa.getConfig().setCodeEliminationMode(CodeEliminationMode.NoCodeElimination);
+		sa.getConfig().getAnalysisFileConfig().setOutputFile(apk+".xml");
 
 		StopWatch taintAnalysisTime = new StopWatch("Taint Analysis");
 		taintAnalysisTime.start("Taint Analysis");

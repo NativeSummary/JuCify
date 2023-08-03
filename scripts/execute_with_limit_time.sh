@@ -2,7 +2,7 @@
 
 $* &
 pid=$!
-((lim = 1800))
+((lim = "${BINARY_TIMEOUT:-1800}"))
 while [[ $lim -gt 0 ]] ; do
     sleep 1
     proc=$(ps -ef | awk -v pid=$pid '$2==pid{print}{}')
@@ -14,4 +14,5 @@ done
 if [[ $lim -gt -9 ]] ; then
     pkill -P $pid
     kill -9 -$pid
+    echo "Process killed because of timout reached (${BINARY_TIMEOUT:-1800}s)"
 fi

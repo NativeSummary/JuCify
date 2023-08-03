@@ -6,3 +6,6 @@ tests
 apps/
 *__pycache__*
 *pyc
+.idea/
+.vscode/
+test/

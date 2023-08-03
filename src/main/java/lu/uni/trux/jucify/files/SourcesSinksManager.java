@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import lu.uni.trux.jucify.utils.Constants;
+import lu.uni.trux.jucify.utils.CustomPrints;
 import lu.uni.trux.jucify.utils.Utils;
 import soot.SootMethod;
 import soot.jimple.infoflow.android.data.AndroidMethod;
@@ -63,10 +64,17 @@ public class SourcesSinksManager extends FileLoader {
 			if(split.length == 2) {
 				type = split[0];
 				signature = split[1];
-				AndroidMethod am = new AndroidMethod(Utils.getMethodNameFromSignature(signature),
+				AndroidMethod am;
+				try {
+					am = new AndroidMethod(Utils.getMethodNameFromSignature(signature),
 						Utils.getParametersNamesFromSignature(signature),
 						Utils.getReturnNameFromSignature(signature),
 						Utils.getClassNameFromSignature(signature));
+				} catch (Exception e) {
+					CustomPrints.perror("Cannot parse: "+signature);
+					continue;
+				}
+				
 				if(type.equals(Constants.SOURCE)) {
 					this.sources.add(am);
 				}else if(type.equals(Constants.SINK)) {

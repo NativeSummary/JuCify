@@ -73,19 +73,23 @@ public class FlowAnalysis {
 				for (ResultSinkInfo sink : results.getResults().keySet()) {
 					for (ResultSourceInfo source : results.getResults().get(sink)) {
 						List<Stmt> path = Arrays.asList(source.getPath());
-						if(pathContainCallToNativeMethods(path)) {
-							if (path != null && !path.isEmpty()) {
-								ResultsAccumulator.v().setHasFlowThroughNative(true);
-								if(!this.raw) {
-									CustomPrints.psuccess("Found path through native code: ");
-									System.out.println("  - From " + source);
-									System.out.println("    - Detailed path:");
-									for(Stmt s : path) {
-										System.out.println("       " + s + " => in method: " + icfg.getMethodOf(s));
+						try {
+							if(pathContainCallToNativeMethods(path)) {
+								if (path != null && !path.isEmpty()) {
+									ResultsAccumulator.v().setHasFlowThroughNative(true);
+									if(!this.raw) {
+										CustomPrints.psuccess("Found path through native code: ");
+										System.out.println("  - From " + source);
+										System.out.println("    - Detailed path:");
+										for(Stmt s : path) {
+											System.out.println("       " + s + " => in method: " + icfg.getMethodOf(s));
+										}
+										System.out.println("  - To " + sink);
 									}
-									System.out.println("  - To " + sink);
 								}
 							}
+						} catch (Exception e) {
+							CustomPrints.perror(e.getMessage());
 						}
 					}
 				}

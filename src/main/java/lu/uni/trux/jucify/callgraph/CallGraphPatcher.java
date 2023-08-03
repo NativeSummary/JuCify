@@ -75,6 +75,7 @@ public class CallGraphPatcher {
 				to = null;
 
 		Map<String, SootMethod> nodesToMethods = new HashMap<String, SootMethod>();
+		CustomPrints.perror("importBinaryCallGraph files.size(): "+String.valueOf(files.size()));
 
 		try {
 			for(Pair<String, String> pair: files) {
@@ -147,6 +148,8 @@ public class CallGraphPatcher {
 				}
 				is.close();
 
+				CustomPrints.perror("Java2Native: "+String.valueOf(javaToNative.size()));
+				CustomPrints.perror("Native2Java: "+String.valueOf(nativeToJava.size()));
 				// GENERATE BINARY NODES THAT ARE JAVA NATIVE CALLS AND INSTRUMENT THE BODY
 				for(Pair<String, SootMethod> p: javaToNative) {
 					name = p.getValue0();
